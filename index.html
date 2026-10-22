@@ -191,12 +191,12 @@ function improveWording(value,tone,length,depth){
  for(const opener of fillerOpeners)out=out.replace(opener,'$1');
  // Recast a few high-frequency templates into direct phrasing without inventing content.
  out=out.replace(/\bthere are (many|several|numerous|a few) benefits to ([^.!?;]+)/gi,(_,amount,subject)=>subject.trim()+' offers '+amount+' benefits');
- out=out.replace(/\bone of the most important (factors|aspects) of ([^,.;!?]+) is ([^.!?;]+)/gi,(_,kind,subject,point)=>(kind.toLowerCase()==='factors'?'A key factor in ':'A key aspect of ')+subject.trim()+' is '+point.trim());
+ out=out.replace(/\bone of the most important (factors|aspects) of ([^,.;!?]+) is ([^.!?;]+)/gi,(match,kind,subject,point,offset,whole)=>{const prefix=offset===0||/[.!?]\s+$|\n\s*$/.test(whole.slice(0,offset));const title=match[0]===match[0].toUpperCase();const start=kind.toLowerCase()==='factors'?(title?'A key factor in ':'a key factor in '):(title?'A key aspect of ':'a key aspect of ');return start+subject.trim()+' is '+point.trim();});
  out=out.replace(/\bthe purpose of this (essay|paper|article) is to (discuss|explore|examine|explain|analyze|analyse) ([^.!?;]+)/gi,(_,kind,verb,topic)=>'This '+kind+' '+({discuss:'discusses',explore:'explores',examine:'examines',explain:'explains',analyze:'analyzes',analyse:'analyses'}[verb.toLowerCase()]||verb)+' '+topic.trim());
  out=out.replace(/\bthis (essay|paper) will (discuss|explore|examine|explain|analyze|analyse) ([^.!?;]+)/gi,(_,kind,verb,topic)=>'This '+kind+' '+({discuss:'discusses',explore:'explores',examine:'examines',explain:'explains',analyze:'analyzes',analyse:'analyses'}[verb.toLowerCase()]||verb)+' '+topic.trim());
  out=out.replace(/\bhas the potential to\b/gi,'can');
  if(depth==='deep'){
-  out=out.replace(/(^|[.!?]\s+|\n\s*)(?:furthermore|moreover|additionally|also),\s*/gi,'$1');
+  out=out.replace(/(^|[.!?]\s+|\n\s*)(?:furthermore|moreover|additionally|also|in addition),\s*/gi,'$1');
   out=out.replace(/(^|[.!?]\s+|\n\s*)in conclusion,\s*/gi,'$1');
   out=out.replace(/(^|[.!?]\s+|\n\s*)to sum up,\s*/gi,'$1');
   const simpleVerbs=[
@@ -219,7 +219,7 @@ function improveWording(value,tone,length,depth){
    .replace(/\bin order to\b/gi,'to')
    .replace(/\bfor the purpose of\b/gi,'for');
  }
- if(tone==='conversational'||tone==='natural'){
+ if(tone==='conversational'){
   const contractions=[
    [/\bdo not\b/gi,"don't"],[/\bdoes not\b/gi,"doesn't"],[/\bdid not\b/gi,"didn't"],
    [/\bis not\b/gi,"isn't"],[/\bare not\b/gi,"aren't"],[/\bwas not\b/gi,"wasn't"],
@@ -229,7 +229,10 @@ function improveWording(value,tone,length,depth){
   ];
   for(const [pattern,replacement] of contractions)out=out.replace(pattern,match=>preserveCase(match,replacement));
  }
- return tidyText(out.replace(/(^|[.!?]\s+|\n\s*),\s*/g,'$1').replace(/[ \t]{2,}/g,' ').replace(/[ \t]+([,.;:!?])/g,'$1').replace(/,\s*,/g,','));
+ out=out.replace(/(^|[.!?]\s+|\n\s*),\s*/g,'$1').replace(/[ \t]{2,}/g,' ').replace(/[ \t]+([,.;:!?])/g,'$1').replace(/,\s*,/g,',');
+ // Restore sentence capitalization after removing a generic opener.
+ out=out.replace(/(^|[.!?]\s+|\n\s*)([a-z])/g,(_,prefix,letter)=>prefix+letter.toUpperCase());
+ return tidyText(out);
 }
 function splitSentences(text){
  if(typeof Intl!=='undefined'&&Intl.Segmenter){
