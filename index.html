@@ -22,11 +22,11 @@
 <button data-mode="essay"><span class="ico">▤</span> Draft from brief</button>
 <button data-mode="originality"><span class="ico">⌕</span> Originality review</button>
 </nav></div>
-<div class="sidefoot"><div class="privacy"><span class="dot"></span> YOUR WRITING, YOUR CONTROL<strong>Private by design</strong>Your draft is processed in this browser with a free model. Model files download, but your text is not sent to an AI provider.</div></div>
+<div class="sidefoot"><div class="privacy"><span class="dot"></span> YOUR WRITING, YOUR CONTROL<strong>Private by design</strong>Your text stays in this browser. No API keys, account, or model downloads.</div></div>
 </aside>
 <main class="main">
-<header class="topbar"><div class="crumb">Workspace <span style="color:#586476"> / </span> <b id="crumb">Humanize text</b></div><div class="top-actions"><button class="pill" id="clearBtn">Clear draft</button><button class="pill api-state" id="apiBtn"><span class="dot" id="apiDot" style="background:#d3a95e"></span><span id="apiLabel">Free AI · not loaded</span></button></div></header>
-<section class="hero"><div class="eyebrow">A better kind of writing assistant</div><h1>Make the words<br><em>sound like you.</em></h1><p>Turn stiff drafts into clear, natural writing. Keep your meaning, bring out your voice, and leave the final judgment where it belongs—with you.</p><div class="chips"><span class="chip">✦ <b>Natural flow</b></span><span class="chip">◈ <b>Your voice</b></span><span class="chip">⌁ <b>Original thinking</b></span><span class="chip">↗ <b>Source-aware</b></span></div></section>
+<header class="topbar"><div class="crumb">Workspace <span style="color:#586476"> / </span> <b id="crumb">Humanize text</b></div><div class="top-actions"><button class="pill" id="clearBtn">Clear draft</button><button class="pill api-state" id="apiBtn"><span class="dot" id="apiDot" style="background:#d3a95e"></span><span id="apiLabel">Instant tools · free</span></button></div></header>
+<section class="hero"><div class="eyebrow">A better kind of writing assistant</div><h1>Make the words<br><em>sound like you.</em></h1><p>Improve essays, paragraphs, emails, reports, and more with lightweight writing rules. Reduce formulaic filler, clean up wording, and preserve your meaning—without a model download or paid API.</p><div class="chips"><span class="chip">✦ <b>Natural flow</b></span><span class="chip">◈ <b>Your voice</b></span><span class="chip">⌁ <b>Original thinking</b></span><span class="chip">↗ <b>Source-aware</b></span></div></section>
 <section class="workspace">
 <div class="panel"><div class="panelhead"><div class="paneltitle"> <span class="step">01</span> Your draft</div><span class="tiny" id="wordCount">0 words</span></div><div class="panelbody">
 <div class="modebar" id="modebar"><button class="active" data-mode="humanize">Humanize</button><button data-mode="rewrite">Polish</button><button data-mode="summarize">Summarize</button><button data-mode="essay">Draft</button><button data-mode="originality">Review</button></div>
@@ -37,13 +37,13 @@
 </div></div>
 <div class="panel"><div class="panelhead"><div class="paneltitle"><span class="step">02</span> Your result</div><div class="outputactions"><button class="secondary" id="copyBtn">Copy result</button><button class="secondary" id="downloadBtn">Export .txt</button></div></div><div class="panelbody">
 <div class="resultmeta" style="margin-bottom:14px"><span class="resulttag" id="resultTag">Ready when you are</span><span class="resulttag neutral" id="outCount">0 words</span></div>
-<div id="output" class="outputarea"><div class="empty"><div class="emptyicon">✳</div><h3>Your writing, with more life</h3><p>Your improved draft will appear here. You stay in control of every word.</p></div></div>
+<div id="output" class="outputarea"><div class="empty"><div class="emptyicon">✳</div><h3>Your writing, with more life</h3><p>Your improved text will appear here. It is processed in this browser, without uploading your draft to an AI provider.</p></div></div>
 <div class="footnote"><span>ⓘ</span><span>Humanly does not promise a “0% AI” detector score or a plagiarism-free guarantee. AI detectors can be wrong. Always verify facts, citations, and that the final text reflects your own understanding.</span></div>
 </div></div>
 </section>
 <section class="below"><div class="feature"><span class="fi">⌁</span><strong>Voice over tricks</strong><p>Improve clarity, rhythm, and specificity instead of adding fake mistakes or awkward wording.</p></div><div class="feature"><span class="fi">◈</span><strong>Respect your sources</strong><p>Flag claims that may need evidence. No invented citations or pretend similarity scores.</p></div><div class="feature"><span class="fi">⤓</span><strong>Ready to use</strong><p>Copy your result or export a plain-text draft to keep working in your preferred editor.</p></div></section>
 </main></div>
-<div class="modalback" id="modalback"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle">Free AI, right in this tab</h2><p>Humanly can run a small open-source writing model directly in your browser. No API key, account, subscription, or paid API is needed.</p><div class="warn">The first load downloads about 386 MB of model files from Hugging Face. Your draft is processed in this tab and is not sent to an AI service. The model runs on the CPU, not the GPU, to avoid relying on your graphics hardware. It is smaller and slower than major cloud models, and may be less capable. No software is installed on Windows.</div><div class="status" id="modelStatus" aria-live="polite">Ready to load the free model when you choose.</div><div class="actions"><button class="secondary" id="cancelModal">Close</button><button class="primary" id="saveKey">Load free AI model</button></div></section></div>
+<div class="modalback" id="modalback"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle">Instant writing tools</h2><p>Humanly works on phones and computers without AI model downloads, API keys, accounts, or subscriptions. Its built-in writing rules tidy up phrasing, reduce formulaic filler, and make text easier to read.</p><div class="warn">This lightweight version does not use a generative AI model, so it cannot create a complete, original essay from a short prompt. For the best result, paste your actual essay or draft and let Humanly improve the wording while keeping your ideas. It does not add fake facts, personal experiences, or deliberate mistakes.</div><div class="status ok" id="modelStatus" aria-live="polite">Ready immediately — nothing to download.</div><div class="actions"><button class="secondary" id="cancelModal">Close</button><button class="primary" id="saveKey">Got it</button></div></section></div>
 <script>
 (() => {
 const $=id=>document.getElementById(id);
@@ -72,7 +72,7 @@ async function loadFile(file){
   $('source').value=extracted;updateCount();$('status').textContent='Loaded '+file.name+'. Review the extracted text before processing.';$('status').className='status ok';
  }catch(err){$('status').textContent=err.message||'Could not read that file.';$('status').className='status error';}
 }
-let mode='humanize', localModel=null, loadingModel=false, result='';
+let mode='humanize', result='';
 const modes={
 humanize:{name:'Humanize text',input:'Paste your AI-generated text',placeholder:'Paste your draft here…',run:'Make it sound natural',tag:'Natural rewrite',instruction:'Revise the provided draft so it reads naturally, specifically, and like thoughtful human writing. Preserve the author’s meaning and factual claims. Improve sentence rhythm, transitions, and specificity. Remove generic filler and repetitive phrasing. Do not add fake personal experiences, factual claims, typos, or deliberately misleading detector-evasion tricks. If a personal detail would help, leave a short [add your own example here] prompt rather than inventing one.'},
 rewrite:{name:'Rewrite & polish',input:'Paste the text you want to improve',placeholder:'Paste a paragraph, email, report, or article…',run:'Rewrite & polish',tag:'Polished draft',instruction:'Edit the text for clarity, grammar, structure, and impact. Preserve meaning, nuance, names, numbers, and factual claims. Do not fabricate evidence or change the author’s position.'},
@@ -80,6 +80,146 @@ summarize:{name:'Summarize',input:'Paste the text you want summarized',placehold
 essay:{name:'Draft from brief',input:'Describe the assignment or paste your brief',placeholder:'Topic, question, purpose, audience, required points, and any sources you must use…',run:'Create a first draft',tag:'Working draft',instruction:'Create a useful first draft based on the user’s brief. Do not invent citations, statistics, quotations, or sources. Where evidence is needed but not supplied, insert a clear [source needed] note. Make reasoning transparent and encourage the user to add their own position and examples.'},
 originality:{name:'Originality review',input:'Paste your draft for a source-aware review',placeholder:'Paste text to review for repeated phrasing, unsupported claims, and citation needs…',run:'Review originality & sources',tag:'Editorial review',instruction:'Review this text for originality risks and academic integrity. Do not claim to run a plagiarism database or AI detector. Identify generic or formulaic passages, claims that need citations, suspiciously precise facts that should be verified, and places where the author’s own analysis could be stronger. Return a concise checklist with short quoted snippets from the supplied text and actionable revisions. Never invent sources or assert that any passage is plagiarized without a matching source.'}
 };
+
+const phraseRules=[
+ [/\bin today['’]s world\b/gi,'today'],
+ [/\bit is important to note that\b/gi,'importantly,'],
+ [/\bit is worth noting that\b/gi,'notably,'],
+ [/\bit should be noted that\b/gi,'notably,'],
+ [/\bas a matter of fact\b/gi,'in fact'],
+ [/\bdue to the fact that\b/gi,'because'],
+ [/\bowing to the fact that\b/gi,'because'],
+ [/\bin order to\b/gi,'to'],
+ [/\bfor the purpose of\b/gi,'for'],
+ [/\bat this point in time\b/gi,'now'],
+ [/\bin the event that\b/gi,'if'],
+ [/\bdespite the fact that\b/gi,'although'],
+ [/\bin spite of the fact that\b/gi,'although'],
+ [/\bwith regard to\b/gi,'about'],
+ [/\bin relation to\b/gi,'about'],
+ [/\ba large number of\b/gi,'many'],
+ [/\ba wide range of\b/gi,'many'],
+ [/\bthe majority of\b/gi,'most'],
+ [/\bhas the ability to\b/gi,'can'],
+ [/\bhave the ability to\b/gi,'can'],
+ [/\bis able to\b/gi,'can'],
+ [/\bare able to\b/gi,'can'],
+ [/\bmake use of\b/gi,'use'],
+ [/\butilizes\b/gi,'uses'],
+ [/\butilized\b/gi,'used'],
+ [/\butilize\b/gi,'use'],
+ [/\bfirst and foremost\b/gi,'first'],
+ [/\blast but not least\b/gi,'finally']
+];
+function preserveCase(match,replacement){
+ if(match===match.toUpperCase())return replacement.toUpperCase();
+ if(match[0]===match[0].toUpperCase())return replacement.charAt(0).toUpperCase()+replacement.slice(1);
+ return replacement;
+}
+function tidyText(value){
+ return String(value)
+  .replace(/\r\n?/g,'\n')
+  .replace(/[ \t]+/g,' ')
+  .replace(/[ \t]*\n[ \t]*/g,'\n')
+  .replace(/\n{3,}/g,'\n\n')
+  .replace(/[ \t]+([,.;:!?])/g,'$1')
+  .replace(/([,;:])(?=\S)/g,'$1 ')
+  .replace(/ {2,}/g,' ')
+  .split('\n').map(line=>line.trim()).join('\n')
+  .replace(/\n{3,}/g,'\n\n').trim();
+}
+function improveWording(value,tone,length){
+ let out=tidyText(value);
+ for(const [pattern,replacement] of phraseRules){
+  out=out.replace(pattern,match=>preserveCase(match,replacement));
+ }
+ if(length==='shorter'){
+  out=out
+   .replace(/\bfor the reason that\b/gi,match=>preserveCase(match,'because'))
+   .replace(/\bin the near future\b/gi,'soon')
+   .replace(/\bthe fact that\b/gi,'that')
+   .replace(/\bhas a tendency to\b/gi,'often');
+ }
+ if(tone==='conversational'){
+  const contractions=[
+   [/\bdo not\b/gi,"don't"],[/\bdoes not\b/gi,"doesn't"],[/\bdid not\b/gi,"didn't"],
+   [/\bis not\b/gi,"isn't"],[/\bare not\b/gi,"aren't"],[/\bwas not\b/gi,"wasn't"],
+   [/\bwere not\b/gi,"weren't"],[/\bhave not\b/gi,"haven't"],[/\bhas not\b/gi,"hasn't"],
+   [/\bhad not\b/gi,"hadn't"],[/\bwill not\b/gi,"won't"],[/\bwould not\b/gi,"wouldn't"],
+   [/\bcould not\b/gi,"couldn't"],[/\bshould not\b/gi,"shouldn't"],[/\bcannot\b/gi,"can't"]
+  ];
+  for(const [pattern,replacement] of contractions){
+   out=out.replace(pattern,match=>preserveCase(match,replacement));
+  }
+ }
+ return out;
+}
+function splitSentences(text){
+ if(typeof Intl!=='undefined'&&Intl.Segmenter){
+  try{return Array.from(new Intl.Segmenter(undefined,{granularity:'sentence'}).segment(text),x=>x.segment.trim()).filter(Boolean);}catch(e){}
+ }
+ return (text.match(/[^.!?]+(?:[.!?]+["'”’)\]]*(?=\s|$)|$)/g)||[text]).map(x=>x.trim()).filter(Boolean);
+}
+const stopWords=new Set(('the a an and or but if then than so to of in on at for from by with as is are was were be been being it its this that these those there here you your yours they their them we our us i me my he she his her not do does did have has had can could will would should may might must into about after before over under between also very more most many much some any each both other such only own same too up out all what when where why how who which while because however therefore moreover furthermore additionally').split(/\s+/));
+function summarizeText(text){
+ const sentences=splitSentences(tidyText(text));
+ if(sentences.length<=3)return sentences.join(' ');
+ const frequencies=Object.create(null);
+ for(const word of (text.toLocaleLowerCase().match(/[\p{L}\p{N}]{3,}/gu)||[])){
+  if(!stopWords.has(word))frequencies[word]=(frequencies[word]||0)+1;
+ }
+ const values=Object.values(frequencies),maxFrequency=Math.max(1,...values);
+ const scored=sentences.map((sentence,index)=>{
+  const words=(sentence.toLocaleLowerCase().match(/[\p{L}\p{N}]{3,}/gu)||[]).filter(w=>!stopWords.has(w));
+  const richness=words.length?words.reduce((sum,w)=>sum+(frequencies[w]||0),0)/words.length:0;
+  const sizeBonus=words.length>=7&&words.length<=32?0.25:0;
+  const positionBonus=index===0?0.8:0;
+  const endBonus=index===sentences.length-1?0.2:0;
+  return {sentence,index,score:(richness/maxFrequency)+sizeBonus+positionBonus+endBonus};
+ });
+ const take=Math.min(5,Math.max(2,Math.ceil(sentences.length*0.3)));
+ return scored.sort((a,b)=>b.score-a.score).slice(0,take).sort((a,b)=>a.index-b.index).map(x=>x.sentence).join(' ');
+}
+function makeEssayPlan(brief){
+ const topic=tidyText(brief).replace(/\n/g,' ').slice(0,500);
+ return 'ESSAY STARTER — based on your brief\n\nTOPIC / QUESTION\n'+topic+
+ '\n\nINTRODUCTION\n• Explain the topic in your own words.\n• Give brief context and define any key terms.\n• End with your main argument or answer to the question.\n\nBODY PARAGRAPH 1 — FIRST MAIN POINT\n• Make one clear point.\n• Add evidence, a source, or a real example.\n• Explain how the evidence supports your argument.\n\nBODY PARAGRAPH 2 — SECOND MAIN POINT\n• Develop a different point.\n• Support it with evidence or an example.\n• Connect it back to the question.\n\nBODY PARAGRAPH 3 — ANOTHER PERSPECTIVE\n• Consider a limitation, counterargument, or alternative view.\n• Explain your response using evidence.\n\nCONCLUSION\n• Bring the main points together.\n• Answer the original question directly.\n• Do not introduce new evidence.\n\nBefore submitting, add your own analysis and verify all sources. This outline is a planning aid, not a completed essay.';
+}
+function reviewText(text){
+ const sentences=splitSentences(tidyText(text));
+ const lines=['QUICK WRITING REVIEW',''];
+ const found=[];
+ for(const phrase of ["in today's world","in today’s world","it is important to note that","it is worth noting that","plays a very important role","first and foremost","last but not least","due to the fact that","in conclusion"]){
+  if(text.toLocaleLowerCase().includes(phrase))found.push(phrase);
+ }
+ lines.push('• Formulaic wording: '+(found.length?found.join('; '):'No common filler phrase from this quick checklist was found.'));
+ const openers=Object.create(null);
+ for(const sentence of sentences){
+  const first=(sentence.toLocaleLowerCase().match(/^[\p{L}\p{N}]+(?:\s+[\p{L}\p{N}]+)?/u)||[])[0];
+  if(first)openers[first]=(openers[first]||0)+1;
+ }
+ const repeated=Object.entries(openers).filter(([,n])=>n>=3).map(([word,n])=>'"'+word+'" starts '+n+' sentences');
+ lines.push('• Repeated openings: '+(repeated.length?repeated.join('; '):'No obvious repeated two-word opening (three or more times).'));
+ const citationSentences=sentences.filter(sentence=>/\b(research|study|studies|survey|statistics|percent|according to|data show|evidence suggests|experts say|report states)\b/i.test(sentence)||/\b(19|20)\d{2}\b/.test(sentence)||/\b\d+(?:\.\d+)?%/.test(sentence));
+ lines.push('• Check evidence: '+(citationSentences.length?citationSentences.slice(0,4).map(x=>'“'+x.slice(0,150)+(x.length>150?'…':'')+'”').join('\n  '):'Check factual, numerical, and research claims for reliable sources.'));
+ const long=sentences.filter(sentence=>sentence.split(/\s+/).length>35);
+ lines.push('• Sentence length: '+(long.length?long.length+' sentence(s) contain more than 35 words; consider splitting at a natural pause.':'No sentence exceeds 35 words.'));
+ lines.push('• Originality: this is a writing checklist only. It does not query a plagiarism database or detect AI authorship.');
+ lines.push('\nNext step: add a specific example or your own interpretation where it strengthens the argument.');
+ return lines.join('\n');
+}
+function transformText(text,mode,tone,length){
+ if(mode==='summarize')return summarizeText(text);
+ if(mode==='essay')return makeEssayPlan(text);
+ if(mode==='originality')return reviewText(text);
+ let out=improveWording(text,tone,length);
+ if(!out)throw new Error('There is no readable text to improve.');
+ if(length==='longer'){
+  out+='\n\n[To develop this further, add a specific example, explanation, or evidence from your own knowledge where it fits.]';
+ }
+ return out;
+}
+
 const count=t=>(t.trim().match(/\S+/g)||[]).length;
 function updateCount(){ $('wordCount').textContent=count($('source').value)+' words';}
 function setMode(m){mode=m;const d=modes[m];document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));$('crumb').textContent=d.name;$('inputLabel').textContent=d.input;$('source').placeholder=d.placeholder;$('runLabel').textContent=d.run;$('resultTag').textContent=d.tag;$('status').textContent='';$('status').className='status';}
@@ -88,98 +228,48 @@ $('source').addEventListener('input',updateCount);
 $('pasteBtn').addEventListener('click',async()=>{const btn=$('pasteBtn');try{if(!navigator.clipboard||!navigator.clipboard.readText)throw new Error('');const pasted=await navigator.clipboard.readText();if(!pasted){$('status').textContent='Your clipboard is empty. Copy your text first, then click Paste text.';$('status').className='status';return;}$('source').value=pasted;updateCount();$('source').focus();$('status').textContent='Text pasted into your draft. Ready to process.';$('status').className='status ok';}catch(e){$('status').textContent='Clipboard access was blocked. Click inside the left text box and press Ctrl+V to paste.';$('status').className='status';$('source').focus();}});
 function openModal(){
  $('modalback').classList.add('open');
- $('saveKey').textContent=localModel?'Free AI is ready — close':'Load free AI model';
- $('saveKey').disabled=loadingModel;
- $('modelStatus').textContent=localModel?'Free AI is loaded and ready. Your text will be processed in this browser tab.':'The first load needs an internet connection to download the model files. No account or API key is needed.';
+ $('modelStatus').textContent='Ready immediately — nothing to download.';
 }
 function closeModal(){ $('modalback').classList.remove('open');}
 $('apiBtn').addEventListener('click',openModal);
 $('cancelModal').addEventListener('click',closeModal);
-$('saveKey').addEventListener('click',async()=>{
- if(localModel){
-  closeModal();
-  $('status').textContent='Free AI is ready. Your text will be processed locally in this browser.';
-  $('status').className='status ok';
-  return;
- }
- if(loadingModel)return;
- loadingModel=true;
- $('saveKey').disabled=true;
- $('saveKey').textContent='Loading free model…';
- $('modelStatus').textContent='Starting the browser AI and downloading model files. Keep this tab open.';
- $('status').textContent='Loading free AI model into this browser…';
- $('status').className='status';
- try{
-  const {pipeline}=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1');
-  localModel=await pipeline('text-generation','onnx-community/SmolLM2-360M-Instruct-ONNX',{
-   dtype:'q4',
-   progress_callback:info=>{
-    if(!info)return;
-    if(info.status==='progress'&&Number.isFinite(info.progress)){
-     const pct=Math.round(info.progress);
-     $('modelStatus').textContent='Downloading model files… '+pct+'%';
-     $('status').textContent='Downloading free AI model… '+pct+'%';
-    }else if(info.status==='done'){
-     $('modelStatus').textContent='Model files ready. Preparing the browser AI…';
-    }
-   }
-  });
-  $('apiLabel').textContent='Free AI ready';
-  $('apiDot').style.background='#76dfb0';
-  $('modelStatus').textContent='Free AI loaded. No key or payment is needed.';
-  $('status').textContent='Free AI is ready. Your draft stays in this browser.';
-  $('status').className='status ok';
-  closeModal();
- }catch(e){
-  localModel=null;
-  $('modelStatus').textContent='Could not load the free model: '+(e.message||'Unknown error')+'. Check your internet connection and try again.';
-  $('status').textContent='Could not load free AI. '+(e.message||'Check your internet connection and try again.');
-  $('status').className='status error';
- }finally{
-  loadingModel=false;
-  $('saveKey').disabled=false;
-  $('saveKey').textContent=localModel?'Free AI is ready — close':'Retry loading free AI';
- }
+$('saveKey').addEventListener('click',()=>{
+ closeModal();
+ $('status').textContent='Ready. Humanly uses lightweight rules in this browser—no AI key, model, or subscription.';
+ $('status').className='status ok';
 });
 $('modalback').addEventListener('click',e=>{if(e.target===$('modalback'))closeModal();});
-$('clearBtn').addEventListener('click',()=>{$('source').value='';result='';updateCount();$('output').innerHTML='<div class="empty"><div class="emptyicon">✳</div><h3>Your writing, with more life</h3><p>Your improved draft will appear here. You stay in control of every word.</p></div>';$('outCount').textContent='0 words';$('resultTag').textContent='Ready when you are';$('status').textContent='';});
+$('clearBtn').addEventListener('click',()=>{$('source').value='';result='';updateCount();$('output').innerHTML='<div class="empty"><div class="emptyicon">✳</div><h3>Your writing, with more life</h3><p>Your improved text will appear here. It is processed in this browser, without uploading your draft to an AI provider.</p></div>';$('outCount').textContent='0 words';$('resultTag').textContent='Ready when you are';$('status').textContent='';});
 $('sampleBtn').addEventListener('click',()=>{$('source').value='In today’s world, technology plays a very important role in our daily lives. It has many benefits and also some challenges. It is important for people to understand how technology affects education, communication, and the way we work. By considering both positive and negative effects, we can make better decisions about using it.';updateCount();$('status').textContent='Example loaded. Replace it with your own draft when ready.';$('status').className='status';});
-$('runBtn').addEventListener('click',async()=>{
-const text=$('source').value.trim();if(!text){$('status').textContent='Paste or write some text first.';$('status').className='status error';$('source').focus();return;}
-if(!localModel){openModal();$('status').textContent='Load the free browser AI first. No API key or payment is required.';$('status').className='status';return;}
-const btn=$('runBtn');btn.disabled=true;$('runLabel').textContent='Working…';$('status').textContent='Transforming locally in this tab…';$('status').className='status';
-$('output').textContent='Working on your draft…';
-result='';
-const d=modes[mode], tone=$('tone').value, length=$('length').value;
-const toneText={natural:'natural and balanced',academic:'clear academic',professional:'professional',conversational:'warm and conversational',concise:'concise and direct',confident:'confident and persuasive'}[tone];
-const lengthText={similar:'Keep approximately the same length.',shorter:'Make it more concise, without losing important meaning.',longer:'Develop it a little further, but do not pad it with filler.'}[length];
-const system='You are Humanly, a careful writing editor. '+d.instruction+' Style requested: '+toneText+'. '+lengthText+' Return only the edited text or requested review, without preamble or claims about AI detection. Preserve the original language unless the user clearly requests another language. Never claim a score of 0% AI or 0% plagiarism. If the task asks for source references but no source material is supplied, mark [source needed] rather than inventing citations.';
-try{
- if(text.length>12000)throw new Error('This free browser model is best for shorter drafts. Please process up to 12,000 characters at a time.');
- const response=await localModel([{role:'system',content:system},{role:'user',content:text}],{
-  max_new_tokens:length==='longer'?512:length==='shorter'?320:384,
-  do_sample:true,
-  temperature:0.65,
-  top_p:0.9,
-  repetition_penalty:1.08
- });
- const generated=response&&response[0]&&response[0].generated_text;
- if(Array.isArray(generated)){
-  const lastAssistant=[...generated].reverse().find(m=>m&&m.role==='assistant'&&typeof m.content==='string');
-  result=lastAssistant?lastAssistant.content.trim():'';
- }else{
-  result=String(generated||'').trim();
-  if(result.startsWith(text))result=result.slice(text.length).trim();
+$('runBtn').addEventListener('click',()=>{
+ const text=$('source').value.trim();
+ if(!text){$('status').textContent='Paste or write some text first.';$('status').className='status error';$('source').focus();return;}
+ const btn=$('runBtn');
+ btn.disabled=true;
+ $('runLabel').textContent='Improving…';
+ $('status').textContent='Improving your text in this browser…';
+ $('status').className='status';
+ $('output').textContent='Working on your draft…';
+ result='';
+ try{
+  result=transformText(text,mode,$('tone').value,$('length').value);
+  if(!result.trim())throw new Error('Humanly could not find enough text to process. Try adding a little more context.');
+  $('output').textContent=result;
+  $('outCount').textContent=count(result)+' words';
+  $('resultTag').textContent=mode==='essay'?'Essay starter':mode==='summarize'?'Quick summary':mode==='originality'?'Writing review':modes[mode].tag;
+  $('status').textContent=mode==='essay'?'A structured outline is ready. Add your own argument, examples, and sources to build the essay.':'Done. Review the edits to make sure the wording still reflects your meaning.';
+  $('status').className='status ok';
+ }catch(e){
+  result='';
+  $('output').innerHTML='<div class="empty"><div class="emptyicon">!</div><h3>Could not process this text</h3><p></p></div>';
+  $('output').querySelector('p').textContent=e.message||'Something went wrong. Your original text remains in the input box.';
+  $('status').textContent=e.message||'Could not process this text.';
+  $('status').className='status error';
+ }finally{
+  btn.disabled=false;
+  $('runLabel').textContent=modes[mode].run;
  }
- if(!result)throw new Error('The compact model returned no text. Try shortening the draft and running it again.');
- $('output').textContent=result;$('outCount').textContent=count(result)+' words';$('resultTag').textContent=d.tag;$('status').textContent='Done. Review the result and verify every fact and citation before using it.';$('status').className='status ok';
-}catch(e){
- $('output').innerHTML='<div class="empty"><div class="emptyicon">!</div><h3>Could not process this draft</h3><p></p></div>';$('output').querySelector('p').textContent=e.message+' Your draft remains in the input box.';$('status').textContent=e.message;$('status').className='status error';
-}finally{
- btn.disabled=false;$('runLabel').textContent=d.run;
-}
 });
-
 $('copyBtn').addEventListener('click',async()=>{if(!result){$('status').textContent='There is no result to copy yet.';return;}try{await navigator.clipboard.writeText(result);$('status').textContent='Result copied to clipboard.';$('status').className='status ok';}catch(e){$('status').textContent='Copy was blocked by your browser. Select the result and copy it manually.';$('status').className='status error';}});
 $('downloadBtn').addEventListener('click',()=>{if(!result){$('status').textContent='There is no result to export yet.';return;}const blob=new Blob([result],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='humanly-edited-draft.txt';a.click();URL.revokeObjectURL(url);});
 setMode('humanize');
