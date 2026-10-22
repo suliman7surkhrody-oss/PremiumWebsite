@@ -1,29 +1,30 @@
 # Humanly — Writing, made yours
 
-A polished, responsive writing workspace for humanizing and polishing text, summarizing, drafting from a brief, and reviewing citation needs.
+A responsive writing workspace for improving text, making a quick extractive summary, planning an essay, and reviewing writing quality.
 
 ## Live site
 https://suliman7surkhrody-oss.github.io/PremiumWebsite/
 
-## Free AI — no API key or subscription
+## Free, phone-friendly text tools
 
-Humanly runs the open-source **SmolLM2-360M-Instruct** ONNX model directly in your browser through Hugging Face Transformers.js.
+Humanly's built-in text tools run directly in the page. They do **not** call a paid AI API, load a language model, or require an account, API key, subscription, or software installation.
 
-1. Open Humanly and click **Free AI · not loaded**.
-2. Select **Load free AI model**.
-3. On the first run, allow the browser to download approximately 386 MB of model files. Keep the tab open while it loads.
-4. Paste or type your text, choose a mode and style, and select the transform button.
+1. Open Humanly on your phone or computer.
+2. Paste or type your essay, paragraph, email, report, or other text.
+3. Choose **Humanize text** or **Rewrite & polish**, then tap the action button.
+4. Copy the result or export it as a text file.
 
-No paid API, account, API key, Windows software installation, or external inference server is required. The model runs in the browser using its CPU/WASM runtime; it is smaller and slower than a large hosted model, so results may be less capable and long text should be processed in sections. The browser may cache the model for later sessions, but it can download the files again if its cache is cleared or evicted.
+The humanizer tidies spacing and punctuation and replaces selected wordy or formulaic phrases with simpler wording. Conversational style can use common contractions; concise style applies a few additional reductions. It is intentionally lightweight and fast on mobile devices. Your text is processed in the browser and is not sent to an AI inference provider.
 
-**Privacy:** your text is sent to the local in-browser model for generation, not uploaded to OpenAI or another AI inference provider. The page does download the model and runtime files from public CDNs/Hugging Face. Do not use Humanly on a shared device for private text.
+## What the tools can and cannot do
 
-## Important limitations
-- Humanly does not promise a 0% AI-detector score or 0% plagiarism.
-- AI detectors can produce false positives and are not reliable proof of authorship.
-- No plagiarism database is queried; review mode flags citation needs and generic phrasing but cannot certify originality.
-- A compact browser model can make mistakes and may rewrite nuanced text imperfectly. Check facts, citations, tone, and meaning before using the result.
-- Processing longer drafts in sections is more reliable with this small model.
+- **Humanize / Polish:** small, rule-based wording improvements. This is not generative AI and will not rewrite every sentence from scratch.
+- **Summarize:** selects relevant sentences from your input; it does not write a new abstract in its own words.
+- **Draft from brief:** creates an essay outline to help you write your own argument. It does not generate a complete essay from a short prompt.
+- **Originality review:** flags a few formulaic phrases, repeated sentence openings, long sentences, and claims worth checking. It does not query a plagiarism database or detect AI authorship.
+- No tool can guarantee a 0% AI-detector score or a plagiarism-free result. Verify facts, citations, tone, and meaning before using the text.
+
+Document upload supports TXT, Markdown, CSV, DOCX, and text-based PDF. DOCX/PDF extraction uses browser libraries loaded from public CDNs, while basic text editing and transformation need no AI model download.
 
 ## Deploy
 GitHub Actions deploys the static website to GitHub Pages on every push to the `main` branch.
