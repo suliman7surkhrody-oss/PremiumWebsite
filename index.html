@@ -82,7 +82,7 @@ function normalizeWorkerUrl(value){
  let url;
  try{url=new URL(value.trim());}catch(e){throw new Error('Enter the full Worker URL beginning with https://');}
  if(url.protocol!=='https:'||!url.hostname.endsWith('.workers.dev'))throw new Error('Use the HTTPS workers.dev URL shown after deploying the Humanly Worker.');
- return url.href.replace(/\\/+$/,'');
+ return url.href.replace(/\/+$/,'');
 }
 async function pingWorker(endpoint){
  const response=await fetch(endpoint+'/health',{method:'GET',headers:{Accept:'application/json'}});
