@@ -22,10 +22,10 @@
 <button data-mode="essay"><span class="ico">▤</span> Draft from brief</button>
 <button data-mode="originality"><span class="ico">⌕</span> Originality review</button>
 </nav></div>
-<div class="sidefoot"><div class="privacy"><span class="dot"></span> YOUR WRITING, YOUR CONTROL<strong>Private by design</strong>Your text stays in this browser. No API keys, account, or model downloads.</div></div>
+<div class="sidefoot"><div class="privacy"><span class="dot"></span> YOUR WRITING, YOUR CONTROL<strong>Clear about privacy</strong>Your draft is sent to your configured AI Worker only when you tap the rewrite button. No provider key is stored in this page.</div></div>
 </aside>
 <main class="main">
-<header class="topbar"><div class="crumb">Workspace <span style="color:#586476"> / </span> <b id="crumb">Humanize text</b></div><div class="top-actions"><button class="pill" id="clearBtn">Clear draft</button><button class="pill api-state" id="apiBtn"><span class="dot" id="apiDot" style="background:#76dfb0"></span><span id="apiLabel">Instant tools · free</span></button></div></header>
+<header class="topbar"><div class="crumb">Workspace <span style="color:#586476"> / </span> <b id="crumb">Humanize text</b></div><div class="top-actions"><button class="pill" id="clearBtn">Clear draft</button><button class="pill api-state" id="apiBtn"><span class="dot" id="apiDot" style="background:#76dfb0"></span><span id="apiLabel">Connect free AI</span></button></div></header>
 <section class="hero"><div class="eyebrow">A better kind of writing assistant</div><h1>Make the words<br><em>sound like you.</em></h1><p>Improve essays, paragraphs, emails, reports, and more with lightweight writing rules. Reduce formulaic filler, clean up wording, and preserve your meaning—without a model download or paid API.</p><div class="chips"><span class="chip">✦ <b>Natural flow</b></span><span class="chip">◈ <b>Your voice</b></span><span class="chip">⌁ <b>Original thinking</b></span><span class="chip">↗ <b>Source-aware</b></span></div></section>
 <section class="workspace">
 <div class="panel"><div class="panelhead"><div class="paneltitle"> <span class="step">01</span> Your draft</div><span class="tiny" id="wordCount">0 words</span></div><div class="panelbody">
@@ -43,7 +43,7 @@
 </section>
 <section class="below"><div class="feature"><span class="fi">⌁</span><strong>Voice over tricks</strong><p>Improve clarity, rhythm, and specificity instead of adding fake mistakes or awkward wording.</p></div><div class="feature"><span class="fi">◈</span><strong>Respect your sources</strong><p>Flag claims that may need evidence. No invented citations or pretend similarity scores.</p></div><div class="feature"><span class="fi">⤓</span><strong>Ready to use</strong><p>Copy your result or export a plain-text draft to keep working in your preferred editor.</p></div></section>
 </main></div>
-<div class="modalback" id="modalback"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle">Instant writing tools</h2><p>Humanly works on phones and computers without AI model downloads, API keys, accounts, or subscriptions. Its built-in writing rules tidy up phrasing, reduce formulaic filler, and make text easier to read.</p><div class="warn">This lightweight version does not use a generative AI model, so it cannot create a complete, original essay from a short prompt. For the best result, paste your actual essay or draft and let Humanly improve the wording while keeping your ideas. It does not add fake facts, personal experiences, or deliberate mistakes.</div><div class="status ok" id="modelStatus" aria-live="polite">Ready immediately — nothing to download.</div><div class="actions"><button class="secondary" id="cancelModal">Close</button><button class="primary" id="saveKey">Got it</button></div></section></div>
+<div class="modalback" id="modalback"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle">Connect Humanly to free AI</h2><p>To truly rewrite a paragraph or essay, Humanly needs a language model. The safe free option uses a Cloudflare Worker you control. No paid OpenAI API key is placed in this webpage.</p><label class="fieldlabel" for="workerUrl">Your Humanly AI Worker URL</label><input id="workerUrl" type="url" placeholder="https://humanly-free-ai.your-subdomain.workers.dev" autocomplete="url" inputmode="url"><div class="warn">This is a service URL, not an API key. The Worker must first be deployed from this repository using a Cloudflare account and the one-time GitHub setup described in the README. On Cloudflare's Free Workers plan, Workers AI has a 10,000-Neuron daily free allocation; requests stop if the free limit is reached, unless you separately upgrade. Your text is sent to Cloudflare to generate the rewrite.</div><div class="status" id="modelStatus" aria-live="polite">No free AI Worker is connected yet.</div><div class="actions"><button class="secondary" id="cancelModal">Cancel</button><button class="primary" id="saveKey">Test and connect</button></div></section></div>
 <script>
 (() => {
 const $=id=>document.getElementById(id);
@@ -72,7 +72,24 @@ async function loadFile(file){
   $('source').value=extracted;updateCount();$('status').textContent='Loaded '+file.name+'. Review the extracted text before processing.';$('status').className='status ok';
  }catch(err){$('status').textContent=err.message||'Could not read that file.';$('status').className='status error';}
 }
-let mode='humanize', result='';
+let mode='humanize', result='', aiEndpoint='';
+try{aiEndpoint=localStorage.getItem('humanlyFreeAiEndpoint')||'';}catch(e){}
+function refreshAIStatus(){
+ $('apiLabel').textContent=aiEndpoint?'Free AI connected':'Connect free AI';
+ $('apiDot').style.background=aiEndpoint?'#76dfb0':'#d3a95e';
+}
+function normalizeWorkerUrl(value){
+ let url;
+ try{url=new URL(value.trim());}catch(e){throw new Error('Enter the full Worker URL beginning with https://');}
+ if(url.protocol!=='https:'||!url.hostname.endsWith('.workers.dev'))throw new Error('Use the HTTPS workers.dev URL shown after deploying the Humanly Worker.');
+ return url.href.replace(/\\/+$/,'');
+}
+async function pingWorker(endpoint){
+ const response=await fetch(endpoint+'/health',{method:'GET',headers:{Accept:'application/json'}});
+ const data=await response.json().catch(()=>({}));
+ if(!response.ok||data.ok!==true||data.service!=='humanly-free-ai')throw new Error(data.error||'That URL did not respond as the Humanly Free AI Worker. Check the URL and deployment.');
+ return data;
+}
 const modes={
 humanize:{name:'Humanize text',input:'Paste text to improve',placeholder:'Paste your draft here…',run:'Make it sound natural',tag:'Natural rewrite'},
 rewrite:{name:'Rewrite & polish',input:'Paste the text you want to improve',placeholder:'Paste a paragraph, email, report, or article…',run:'Rewrite & polish',tag:'Polished draft'},
@@ -308,42 +325,77 @@ $('source').addEventListener('input',updateCount);
 $('pasteBtn').addEventListener('click',async()=>{const btn=$('pasteBtn');try{if(!navigator.clipboard||!navigator.clipboard.readText)throw new Error('');const pasted=await navigator.clipboard.readText();if(!pasted){$('status').textContent='Your clipboard is empty. Copy your text first, then click Paste text.';$('status').className='status';return;}$('source').value=pasted;updateCount();$('source').focus();$('status').textContent='Text pasted into your draft. Ready to process.';$('status').className='status ok';}catch(e){$('status').textContent='Clipboard access was blocked. Click inside the left text box and press Ctrl+V to paste.';$('status').className='status';$('source').focus();}});
 function openModal(){
  $('modalback').classList.add('open');
- $('modelStatus').textContent='Ready immediately — nothing to download.';
+ $('workerUrl').value=aiEndpoint;
+ $('saveKey').disabled=false;
+ $('saveKey').textContent='Test and connect';
+ $('modelStatus').className='status';
+ $('modelStatus').textContent=aiEndpoint?'Current URL: '+aiEndpoint:'Paste the workers.dev URL after you deploy the free AI Worker.';
 }
 function closeModal(){ $('modalback').classList.remove('open');}
 $('apiBtn').addEventListener('click',openModal);
 $('cancelModal').addEventListener('click',closeModal);
-$('saveKey').addEventListener('click',()=>{
- closeModal();
- $('status').textContent='Ready. Humanly uses lightweight rules in this browser—no AI key, model, or subscription.';
- $('status').className='status ok';
+$('saveKey').addEventListener('click',async()=>{
+ const button=$('saveKey');
+ let endpoint;
+ try{endpoint=normalizeWorkerUrl($('workerUrl').value);}
+ catch(e){$('modelStatus').textContent=e.message;$('modelStatus').className='status error';return;}
+ button.disabled=true;
+ button.textContent='Testing…';
+ $('modelStatus').textContent='Checking the Worker connection…';
+ $('modelStatus').className='status';
+ try{
+  await pingWorker(endpoint);
+  aiEndpoint=endpoint;
+  try{localStorage.setItem('humanlyFreeAiEndpoint',aiEndpoint);}catch(e){}
+  refreshAIStatus();
+  $('modelStatus').textContent='Connected. Humanly will now use the hosted language model to rewrite your text.';
+  $('modelStatus').className='status ok';
+  closeModal();
+  $('status').textContent='Free AI connected. Paste your draft and choose a rewrite action.';
+  $('status').className='status ok';
+ }catch(e){
+  $('modelStatus').textContent=(e.message||'Could not connect.')+' Check that the Worker is deployed and the URL is correct.';
+  $('modelStatus').className='status error';
+ }finally{
+  button.disabled=false;
+  button.textContent='Test and connect';
+ }
 });
 $('modalback').addEventListener('click',e=>{if(e.target===$('modalback'))closeModal();});
 $('clearBtn').addEventListener('click',()=>{$('source').value='';result='';updateCount();$('output').innerHTML='<div class="empty"><div class="emptyicon">✳</div><h3>Your writing, with more life</h3><p>Your improved text will appear here. It is processed in this browser, without uploading your draft to an AI provider.</p></div>';$('outCount').textContent='0 words';$('resultTag').textContent='Ready when you are';$('status').textContent='';});
 $('sampleBtn').addEventListener('click',()=>{$('source').value='In today’s world, technology plays a very important role in our daily lives. It has many benefits and also some challenges. It is important for people to understand how technology affects education, communication, and the way we work. By considering both positive and negative effects, we can make better decisions about using it.';updateCount();$('status').textContent='Example loaded. Replace it with your own draft when ready.';$('status').className='status';});
-$('runBtn').addEventListener('click',()=>{
+$('runBtn').addEventListener('click',async()=>{
  const text=$('source').value.trim();
  if(!text){$('status').textContent='Paste or write some text first.';$('status').className='status error';$('source').focus();return;}
+ if(!aiEndpoint){openModal();$('status').textContent='Connect the free AI Worker once to run a genuine model-based rewrite.';$('status').className='status error';return;}
  const btn=$('runBtn');
  btn.disabled=true;
- $('runLabel').textContent='Improving…';
- $('status').textContent='Improving your text in this browser…';
+ $('runLabel').textContent='Rewriting with AI…';
+ $('status').textContent='Sending the draft to your configured free AI Worker…';
  $('status').className='status';
  $('output').textContent='Working on your draft…';
  result='';
  try{
-  result=transformText(text,mode,$('tone').value,$('length').value,$('depth').value);
-  if(!result.trim())throw new Error('Humanly could not find enough text to process. Try adding a little more context.');
+  if(text.length>12000)throw new Error('For now, process up to 12,000 characters at a time. Split longer essays into sections.');
+  const response=await fetch(aiEndpoint+'/humanize',{
+   method:'POST',
+   headers:{'Content-Type':'application/json','Accept':'application/json'},
+   body:JSON.stringify({text,mode,tone:$('tone').value,length:$('length').value,depth:$('depth').value})
+  });
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data.error||('The free AI service returned error '+response.status+'.'));
+  result=String(data.result||'').trim();
+  if(!result)throw new Error('The model returned an empty result. Try again or shorten the text.');
   $('output').textContent=result;
   $('outCount').textContent=count(result)+' words';
-  $('resultTag').textContent=mode==='essay'?'Essay starter':mode==='summarize'?'Quick summary':mode==='originality'?'Writing review':modes[mode].tag;
-  $('status').textContent=mode==='essay'?'A structured outline is ready. Add your own argument, examples, and sources to build the essay.':'Done. Review the edits to make sure the wording still reflects your meaning.';
+  $('resultTag').textContent=mode==='essay'?'AI first draft':mode==='summarize'?'AI summary':mode==='originality'?'AI writing review':modes[mode].tag;
+  $('status').textContent='AI editing complete. Check that the result keeps your intended meaning, evidence, and citations.';
   $('status').className='status ok';
  }catch(e){
   result='';
-  $('output').innerHTML='<div class="empty"><div class="emptyicon">!</div><h3>Could not process this text</h3><p></p></div>';
-  $('output').querySelector('p').textContent=e.message||'Something went wrong. Your original text remains in the input box.';
-  $('status').textContent=e.message||'Could not process this text.';
+  $('output').innerHTML='<div class="empty"><div class="emptyicon">!</div><h3>Could not process this draft</h3><p></p></div>';
+  $('output').querySelector('p').textContent=e.message||'The free AI Worker could not process this text. Your original draft remains in the input box.';
+  $('status').textContent=e.message||'The free AI Worker could not process this text.';
   $('status').className='status error';
  }finally{
   btn.disabled=false;
@@ -354,4 +406,6 @@ $('copyBtn').addEventListener('click',async()=>{if(!result){$('status').textCont
 $('downloadBtn').addEventListener('click',()=>{if(!result){$('status').textContent='There is no result to export yet.';return;}const blob=new Blob([result],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='humanly-edited-draft.txt';a.click();URL.revokeObjectURL(url);});
 setMode('humanize');
 })();
+
+refreshAIStatus();
 </script></body></html>
