@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#10131b"><meta name="description" content="Rewrite AI-generated drafts into clearer, more natural writing with your own voice.">
+<meta name="theme-color" content="#10131b"><meta name="description" content="Lightweight text humanizer for essays, paragraphs, emails, and reports. Free, fast, and phone-friendly.">
 <title>Humanly — Make the words yours</title>
 <style>
 :root{--bg:#0d1017;--panel:#141923;--panel2:#191f2b;--line:#293140;--text:#f2f4f8;--muted:#9aa5b6;--mint:#b9f4d5;--mint2:#76dfb0;--purple:#b5a5ff;--danger:#ffb2b2}
@@ -30,7 +30,7 @@
 <section class="workspace">
 <div class="panel"><div class="panelhead"><div class="paneltitle"> <span class="step">01</span> Your draft</div><span class="tiny" id="wordCount">0 words</span></div><div class="panelbody">
 <div class="modebar" id="modebar"><button class="active" data-mode="humanize">Humanize</button><button data-mode="rewrite">Polish</button><button data-mode="summarize">Summarize</button><button data-mode="essay">Draft</button><button data-mode="originality">Review</button></div>
-<div class="fieldlabel"><span id="inputLabel">Paste your AI-generated text</span><span style="display:flex;align-items:center;gap:10px"><span class="tiny">Plain text</span><button class="pastebtn" id="pasteBtn" type="button">↳ Paste text</button></span></div>
+<div class="fieldlabel"><span id="inputLabel">Paste your text to improve</span><span style="display:flex;align-items:center;gap:10px"><span class="tiny">Plain text</span><button class="pastebtn" id="pasteBtn" type="button">↳ Paste text</button></span></div>
 <div class="uploadrow" id="uploadZone"><div class="uploadcopy"><div class="uploadicon">↥</div><div><strong>Upload a document or drop it here</strong><small>TXT, Markdown, CSV, DOCX or PDF · text is extracted in your browser</small></div></div><button class="uploadbtn" id="uploadBtn" type="button">Choose file</button><input class="fileinput" id="fileInput" type="file" accept=".txt,.md,.markdown,.csv,.docx,.pdf,text/plain,text/markdown,text/csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></div><textarea id="source" class="textinput" placeholder="Paste your draft here…&#10;&#10;Tip: include your own examples, opinions, or experiences in the draft so the result reflects what you actually think." spellcheck="true"></textarea>
 <div class="controls"><div class="control"><label for="tone">Writing style</label><select id="tone"><option value="natural">Natural & balanced</option><option value="academic">Academic, clear</option><option value="professional">Professional</option><option value="conversational">Warm & conversational</option><option value="concise">Concise & direct</option><option value="confident">Confident & persuasive</option></select></div><div class="control"><label for="length">Length</label><select id="length"><option value="similar">Keep similar length</option><option value="shorter">More concise</option><option value="longer">Add development prompt</option></select></div></div>
 <div class="actions"><button class="primary" id="runBtn">✦ <span id="runLabel">Make it sound natural</span> <span>→</span></button><button class="secondary" id="sampleBtn" title="Load an example">Example</button></div><div class="status" id="status" aria-live="polite"></div>
