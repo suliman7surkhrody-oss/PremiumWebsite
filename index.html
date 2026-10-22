@@ -32,7 +32,7 @@
 <div class="modebar" id="modebar"><button class="active" data-mode="humanize">Humanize</button><button data-mode="rewrite">Polish</button><button data-mode="summarize">Summarize</button><button data-mode="essay">Draft</button><button data-mode="originality">Review</button></div>
 <div class="fieldlabel"><span id="inputLabel">Paste your text to improve</span><span style="display:flex;align-items:center;gap:10px"><span class="tiny">Plain text</span><button class="pastebtn" id="pasteBtn" type="button">↳ Paste text</button></span></div>
 <div class="uploadrow" id="uploadZone"><div class="uploadcopy"><div class="uploadicon">↥</div><div><strong>Upload a document or drop it here</strong><small>TXT, Markdown, CSV, DOCX or PDF · text is extracted in your browser</small></div></div><button class="uploadbtn" id="uploadBtn" type="button">Choose file</button><input class="fileinput" id="fileInput" type="file" accept=".txt,.md,.markdown,.csv,.docx,.pdf,text/plain,text/markdown,text/csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></div><textarea id="source" class="textinput" placeholder="Paste your draft here…&#10;&#10;Tip: include your own examples, opinions, or experiences in the draft so the result reflects what you actually think." spellcheck="true"></textarea>
-<div class="controls"><div class="control"><label for="tone">Writing style</label><select id="tone"><option value="natural">Natural & balanced</option><option value="academic">Academic, clear</option><option value="professional">Professional</option><option value="conversational">Warm & conversational</option><option value="concise">Concise & direct</option><option value="confident">Confident & persuasive</option></select></div><div class="control"><label for="length">Length</label><select id="length"><option value="similar">Keep similar length</option><option value="shorter">More concise</option><option value="longer">Add development prompt</option></select></div></div>
+<div class="controls"><div class="control"><label for="tone">Writing style</label><select id="tone"><option value="natural">Natural & balanced</option><option value="academic">Academic, clear</option><option value="professional">Professional</option><option value="conversational">Warm & conversational</option><option value="concise">Concise & direct</option><option value="confident">Confident & persuasive</option></select></div><div class="control"><label for="depth">Rewrite depth</label><select id="depth"><option value="deep" selected>Deeper natural rewrite</option><option value="balanced">Balanced rewrite</option><option value="light">Light touch</option></select></div><div class="control"><label for="length">Length</label><select id="length"><option value="similar">Keep similar length</option><option value="shorter">More concise</option><option value="longer">Add development prompt</option></select></div></div>
 <div class="actions"><button class="primary" id="runBtn">✦ <span id="runLabel">Make it sound natural</span> <span>→</span></button><button class="secondary" id="sampleBtn" title="Load an example">Example</button></div><div class="status" id="status" aria-live="polite"></div>
 </div></div>
 <div class="panel"><div class="panelhead"><div class="paneltitle"><span class="step">02</span> Your result</div><div class="outputactions"><button class="secondary" id="copyBtn">Copy result</button><button class="secondary" id="downloadBtn">Export .txt</button></div></div><div class="panelbody">
@@ -82,10 +82,10 @@ originality:{name:'Originality review',input:'Paste your draft for a writing-qua
 };
 
 const phraseRules=[
- [/\bin today['’]s world\b/gi,'today'],
- [/\bit is important to note that\b/gi,'importantly,'],
- [/\bit is worth noting that\b/gi,'notably,'],
- [/\bit should be noted that\b/gi,'notably,'],
+ [/\bin today['’]s world\b/gi,''],
+ [/\bit is important to note that\b/gi,''],
+ [/\bit is worth noting that\b/gi,''],
+ [/\bit should be noted that\b/gi,''],
  [/\bas a matter of fact\b/gi,'in fact'],
  [/\bdue to the fact that\b/gi,'because'],
  [/\bowing to the fact that\b/gi,'because'],
@@ -100,13 +100,13 @@ const phraseRules=[
  [/\ba large number of\b/gi,'many'],
  [/\ba wide range of\b/gi,'many'],
  [/\bthe majority of\b/gi,'most'],
- [/\bin today's fast-paced world\b/gi,'today'],
- [/\bin today's rapidly changing world\b/gi,'today'],
- [/\bin today's digital age\b/gi,'today'],
- [/\bin today's society\b/gi,'today'],
- [/\bin modern society\b/gi,'today'],
- [/\bit is crucial to note that\b/gi,'notably,'],
- [/\bit is worth mentioning that\b/gi,'also,'],
+ [/\bin today's fast-paced world\b/gi,''],
+ [/\bin today's rapidly changing world\b/gi,''],
+ [/\bin today's digital age\b/gi,''],
+ [/\bin today's society\b/gi,''],
+ [/\bin modern society\b/gi,''],
+ [/\bit is crucial to note that\b/gi,''],
+ [/\bit is worth mentioning that\b/gi,''],
  [/\bthis highlights the importance of\b/gi,'this shows why'],
  [/\bthis underscores the significance of\b/gi,'this shows why'],
  [/\bplays a very important role in\b/gi,'is very important to'],
@@ -127,6 +127,29 @@ const phraseRules=[
  [/\bendeavor\b/gi,'try'],
  [/\bsubsequently\b/gi,'later'],
  [/\bmultifaceted\b/gi,'complex'],
+ [/ \bindividuals\b/gi,'people'],
+ [/ \butilization\b/gi,'use'],
+ [/ \bfacilitate\b/gi,'help'],
+ [/ \bfacilitates\b/gi,'helps'],
+ [/ \bfacilitated\b/gi,'helped'],
+ [/ \bapproximately\b/gi,'about'],
+ [/ \ba considerable amount of\b/gi,'much'],
+ [/ \bin the context of\b/gi,'in'],
+ [/ \bwith the aim of\b/gi,'to'],
+ [/ \bhas a significant impact on\b/gi,'strongly affects'],
+ [/ \bhas an impact on\b/gi,'affects'],
+ [/ \bplays a significant role in\b/gi,'shapes'],
+ [/ \bplays an essential role in\b/gi,'is essential to'],
+ [/ \bplays a major role in\b/gi,'strongly affects'],
+ [/ \bserves as a reminder that\b/gi,'shows that'],
+ [/ \bin light of the fact that\b/gi,'because'],
+ [/ \bthe question of whether\b/gi,'whether'],
+ [/ \ba number of different\b/gi,'several'],
+ [/ \bit is clear that\b/gi,''],
+ [/ \bit is evident that\b/gi,''],
+ [/ \bthere is no doubt that\b/gi,''],
+ [/ \bit is undeniable that\b/gi,''],
+ [/ \bit goes without saying that\b/gi,''],
  [/\bhas the ability to\b/gi,'can'],
  [/\bhave the ability to\b/gi,'can'],
  [/\bis able to\b/gi,'can'],
@@ -155,19 +178,48 @@ function tidyText(value){
   .split('\n').map(line=>line.trim()).join('\n')
   .replace(/\n{3,}/g,'\n\n').trim();
 }
-function improveWording(value,tone,length){
+function improveWording(value,tone,length,depth){
  let out=tidyText(value);
  for(const [pattern,replacement] of phraseRules){
   out=out.replace(pattern,match=>preserveCase(match,replacement));
  }
- if(length==='shorter'){
+ // Remove repetitive essay scaffolding when it introduces a sentence; preserve the actual claim.
+ const fillerOpeners=[
+  /(^|[.!?]\s+|\n\s*)(?:in today's world|in today's society|in today's digital age|in today's fast-paced world|in today's rapidly changing world|in the modern world|in this day and age)\s*,?\s*/gi,
+  /(^|[.!?]\s+|\n\s*)(?:it is important to note that|it is worth noting that|it should be noted that|it is crucial to note that|it is worth mentioning that|it is clear that|it is evident that|there is no doubt that|it is undeniable that|it goes without saying that)\s+/gi
+ ];
+ for(const opener of fillerOpeners)out=out.replace(opener,'$1');
+ // Recast a few high-frequency templates into direct phrasing without inventing content.
+ out=out.replace(/\bthere are (many|several|numerous|a few) benefits to ([^.!?;]+)/gi,(_,amount,subject)=>subject.trim()+' offers '+amount+' benefits');
+ out=out.replace(/\bone of the most important (factors|aspects) of ([^,.;!?]+) is ([^.!?;]+)/gi,(_,kind,subject,point)=>(kind.toLowerCase()==='factors'?'A key factor in ':'A key aspect of ')+subject.trim()+' is '+point.trim());
+ out=out.replace(/\bthe purpose of this (essay|paper|article) is to (discuss|explore|examine|explain|analyze|analyse) ([^.!?;]+)/gi,(_,kind,verb,topic)=>'This '+kind+' '+({discuss:'discusses',explore:'explores',examine:'examines',explain:'explains',analyze:'analyzes',analyse:'analyses'}[verb.toLowerCase()]||verb)+' '+topic.trim());
+ out=out.replace(/\bthis (essay|paper) will (discuss|explore|examine|explain|analyze|analyse) ([^.!?;]+)/gi,(_,kind,verb,topic)=>'This '+kind+' '+({discuss:'discusses',explore:'explores',examine:'examines',explain:'explains',analyze:'analyzes',analyse:'analyses'}[verb.toLowerCase()]||verb)+' '+topic.trim());
+ out=out.replace(/\bhas the potential to\b/gi,'can');
+ if(depth==='deep'){
+  out=out.replace(/(^|[.!?]\s+|\n\s*)(?:furthermore|moreover|additionally),\s*/gi,'$1');
+  out=out.replace(/(^|[.!?]\s+|\n\s*)in conclusion,\s*/gi,'$1');
+  out=out.replace(/(^|[.!?]\s+|\n\s*)to sum up,\s*/gi,'$1');
+  const simpleVerbs=[
+   [/\bdemonstrates\b/gi,'shows'],[/\bdemonstrated\b/gi,'showed'],[/\bdemonstrate\b/gi,'show'],
+   [/\bindicates\b/gi,'shows'],[/\bindicated\b/gi,'showed'],[/\bindicate\b/gi,'show'],
+   [/\bcommences\b/gi,'begins'],[/\bcommenced\b/gi,'began'],[/\bcommence\b/gi,'begin'],
+   [/\bobtains\b/gi,'gets'],[/\bobtained\b/gi,'got'],[/\bobtain\b/gi,'get'],
+   [/\bindividuals\b/gi,'people'],[/\bnumerous\b/gi,'many']
+  ];
+  for(const [pattern,replacement] of simpleVerbs)out=out.replace(pattern,replacement);
+ }else if(depth==='balanced'){
+  out=out.replace(/(^|[.!?]\s+|\n\s*)in conclusion,\s*/gi,'$1');
+ }
+ if(length==='shorter'||tone==='concise'){
   out=out
-   .replace(/\bfor the reason that\b/gi,match=>preserveCase(match,'because'))
+   .replace(/\bfor the reason that\b/gi,'because')
    .replace(/\bin the near future\b/gi,'soon')
    .replace(/\bthe fact that\b/gi,'that')
-   .replace(/\bhas a tendency to\b/gi,'often');
+   .replace(/\bhas a tendency to\b/gi,'often')
+   .replace(/\bin order to\b/gi,'to')
+   .replace(/\bfor the purpose of\b/gi,'for');
  }
- if(tone==='conversational'){
+ if(tone==='conversational'||tone==='natural'){
   const contractions=[
    [/\bdo not\b/gi,"don't"],[/\bdoes not\b/gi,"doesn't"],[/\bdid not\b/gi,"didn't"],
    [/\bis not\b/gi,"isn't"],[/\bare not\b/gi,"aren't"],[/\bwas not\b/gi,"wasn't"],
@@ -175,11 +227,9 @@ function improveWording(value,tone,length){
    [/\bhad not\b/gi,"hadn't"],[/\bwill not\b/gi,"won't"],[/\bwould not\b/gi,"wouldn't"],
    [/\bcould not\b/gi,"couldn't"],[/\bshould not\b/gi,"shouldn't"],[/\bcannot\b/gi,"can't"]
   ];
-  for(const [pattern,replacement] of contractions){
-   out=out.replace(pattern,match=>preserveCase(match,replacement));
-  }
+  for(const [pattern,replacement] of contractions)out=out.replace(pattern,match=>preserveCase(match,replacement));
  }
- return out;
+ return tidyText(out.replace(/[ \t]{2,}/g,' ').replace(/[ \t]+([,.;:!?])/g,'$1').replace(/,\s*,/g,','));
 }
 function splitSentences(text){
  if(typeof Intl!=='undefined'&&Intl.Segmenter){
@@ -235,11 +285,11 @@ function reviewText(text){
  lines.push('\nNext step: add a specific example or your own interpretation where it strengthens the argument.');
  return lines.join('\n');
 }
-function transformText(text,mode,tone,length){
+function transformText(text,mode,tone,length,depth){
  if(mode==='summarize')return summarizeText(text);
  if(mode==='essay')return makeEssayPlan(text);
  if(mode==='originality')return reviewText(text);
- let out=improveWording(text,tone,length);
+ let out=improveWording(text,tone,length,depth);
  if(!out)throw new Error('There is no readable text to improve.');
  if(length==='longer'){
   out+='\n\n[To develop this further, add a specific example, explanation, or evidence from your own knowledge where it fits.]';
@@ -279,7 +329,7 @@ $('runBtn').addEventListener('click',()=>{
  $('output').textContent='Working on your draft…';
  result='';
  try{
-  result=transformText(text,mode,$('tone').value,$('length').value);
+  result=transformText(text,mode,$('tone').value,$('length').value,$('depth').value);
   if(!result.trim())throw new Error('Humanly could not find enough text to process. Try adding a little more context.');
   $('output').textContent=result;
   $('outCount').textContent=count(result)+' words';
