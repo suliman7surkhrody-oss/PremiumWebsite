@@ -149,6 +149,7 @@ const text=$('source').value.trim();if(!text){$('status').textContent='Paste or 
 if(!localModel){openModal();$('status').textContent='Load the free browser AI first. No API key or payment is required.';$('status').className='status';return;}
 const btn=$('runBtn');btn.disabled=true;$('runLabel').textContent='Working…';$('status').textContent='Transforming locally in this tab…';$('status').className='status';
 $('output').textContent='Working on your draft…';
+result='';
 const d=modes[mode], tone=$('tone').value, length=$('length').value;
 const toneText={natural:'natural and balanced',academic:'clear academic',professional:'professional',conversational:'warm and conversational',concise:'concise and direct',confident:'confident and persuasive'}[tone];
 const lengthText={similar:'Keep approximately the same length.',shorter:'Make it more concise, without losing important meaning.',longer:'Develop it a little further, but do not pad it with filler.'}[length];
