@@ -1,37 +1,51 @@
 # Humanly — Writing, made yours
 
-A responsive writing workspace for improving text, making a quick extractive summary, planning an essay, and reviewing writing quality.
+A responsive writing workspace for rewriting essays, paragraphs, emails, reports, and other text; summarizing; drafting from a brief; and reviewing writing quality.
 
 ## Live site
 https://suliman7surkhrody-oss.github.io/PremiumWebsite/
 
-## Free, phone-friendly writing tools
+## Real AI rewriting — free allowance, no browser API key
 
-Humanly's built-in text tools run directly in the webpage. They do **not** call a paid AI API, load a language model, or require an account, API key, subscription, or software installation.
+The front end uses a Cloudflare Workers AI backend so it can use a language model without downloading one onto a phone or exposing a provider token in the webpage. The default model is `@cf/google/gemma-4-26b-a4b-it`. Your text is sent to your configured Worker only when you click the rewrite button. Do not submit confidential content unless you are comfortable sending it to Cloudflare.
 
-1. Open Humanly on your phone or computer.
-2. Paste your own essay, paragraph, email, report, or other text.
-3. Choose **Humanize text** or **Rewrite & polish**.
-4. Select a writing style and **Rewrite depth**. Deeper natural rewrite is the default.
-5. Copy the result or export it as a text file.
+Cloudflare currently provides a **10,000 Neurons/day free Workers AI allocation** on the Workers Free plan. On that plan, requests stop when the free allocation is reached; keep the account on Free and do not upgrade to a paid plan if you need a hard no-billing limit. Usage and model availability are governed by Cloudflare's current terms and limits:
+- [Workers AI pricing and free allocation](https://developers.cloudflare.com/workers-ai/platform/pricing/)
+- [Workers AI model setup](https://developers.cloudflare.com/workers-ai/get-started/workers-wrangler/)
 
-### Rewrite settings
-- **Deeper natural rewrite:** removes common essay filler openings, simplifies wordy phrases, rewrites selected repetitive sentence templates, and prefers clearer verbs.
-- **Balanced rewrite:** makes common wording changes while keeping more transitions.
-- **Light touch:** preserves more of the source wording.
-- **Writing style:** supports natural, academic, professional, conversational, concise, and confident preferences. Conversational style can use contractions; concise style shortens selected expressions.
+## One-time setup for the AI Worker
 
-Humanly processes text locally in the browser. It does not upload the draft to an AI inference provider.
+The frontend is on GitHub Pages, which is static hosting and cannot itself run server-side AI code. The Worker files are included in this repository, but must be deployed to your Cloudflare account once before model-based rewriting can work.
 
-## What the tools can and cannot do
+1. Create or sign in to a [Cloudflare account](https://dash.cloudflare.com/). Keep the account on the **Workers Free** plan.
+2. In Cloudflare, create an API token using the **Edit Cloudflare Workers** template and copy your Account ID. Scope the token to the account where you will deploy Humanly.
+3. In this repository open **Settings → Secrets and variables → Actions** and add these repository secrets:
+   - `CLOUDFLARE_API_TOKEN` — the token from Cloudflare.
+   - `CLOUDFLARE_ACCOUNT_ID` — your Cloudflare Account ID.
+   
+   Never paste the API token into a source file or the Humanly webpage.
+4. Open **Actions → Deploy Humanly Free AI Worker → Run workflow**. When the run succeeds, open its log and copy the published `https://humanly-free-ai....workers.dev` URL.
+5. Open the Humanly website, click **Connect free AI**, paste that Worker URL, and select **Test and connect**. This URL is saved in that browser only, so repeat that final step on your phone.
 
-- **Humanize / Polish:** rule-based writing edits, not generative AI. They cannot rewrite every sentence from scratch or reliably make an AI-written essay indistinguishable from a human-written one.
-- **Summarize:** selects relevant sentences from your input; it does not write a new abstract in its own words.
-- **Draft from brief:** creates an essay outline to help you write your own argument. It does not generate a complete essay from a short prompt.
-- **Originality review:** flags selected formulaic phrases, repeated sentence openings, long sentences, and claims worth checking. It does not query a plagiarism database or detect AI authorship.
-- AI detectors can be wrong, and different detectors may give conflicting scores. Humanly cannot promise a particular detector score. For meaningful improvement, use your own reasoning, evidence, wording, and examples, then verify the edited result.
+The deployment workflow is manual-only. It will not deploy the Worker until you explicitly run it after adding the two GitHub secrets.
 
-Document upload supports TXT, Markdown, CSV, DOCX, and text-based PDF. DOCX/PDF extraction uses browser libraries loaded from public CDNs; everyday text rewriting needs no model download.
+## What the AI does
 
-## Deploy
-GitHub Actions deploys the static website to GitHub Pages on every push to the `main` branch.
+- **Humanize / Polish:** makes a genuine sentence- and paragraph-level edit instead of only swapping a few phrases.
+- **Summarize:** writes a concise summary of the supplied text.
+- **Draft from brief:** creates a first draft based on the supplied assignment instructions.
+- **Originality review:** provides editorial feedback on repeated wording, clarity, reasoning, and evidence needs; it does not query a plagiarism database.
+
+The model is instructed to keep the writer's meaning, avoid invented facts or experiences, and not promise or target any AI-detector score. Detectors may be inaccurate, and no tool can guarantee a particular result. Review the text yourself and add your own analysis, examples, and sources.
+
+## Limits and privacy
+
+- Inputs are limited to 12,000 characters per request.
+- The Worker is intended to accept requests from the Humanly GitHub Pages origin only. This is a browser-origin restriction, not strong authentication; treat the endpoint as public. The Workers Free plan's daily AI allowance is the hard no-charge usage limit.
+- Humanly does not log the content of submitted drafts in its Worker code.
+- The frontend keeps only the Worker URL in local browser storage; it does not store your draft there.
+- PDF/DOCX extraction uses browser libraries loaded from public CDNs.
+
+## Deploy the website
+
+GitHub Actions deploys the static website to GitHub Pages on every push to the `main` branch. Deploying the AI Worker is a separate, manual action described above.
