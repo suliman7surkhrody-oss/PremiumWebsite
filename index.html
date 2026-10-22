@@ -127,24 +127,24 @@ const phraseRules=[
  [/\bendeavor\b/gi,'try'],
  [/\bsubsequently\b/gi,'later'],
  [/\bmultifaceted\b/gi,'complex'],
- [/ \bindividuals\b/gi,'people'],
- [/ \butilization\b/gi,'use'],
- [/ \bfacilitate\b/gi,'help'],
- [/ \bfacilitates\b/gi,'helps'],
- [/ \bfacilitated\b/gi,'helped'],
- [/ \bapproximately\b/gi,'about'],
- [/ \ba considerable amount of\b/gi,'much'],
- [/ \bin the context of\b/gi,'in'],
- [/ \bwith the aim of\b/gi,'to'],
- [/ \bhas a significant impact on\b/gi,'strongly affects'],
- [/ \bhas an impact on\b/gi,'affects'],
- [/ \bplays a significant role in\b/gi,'shapes'],
- [/ \bplays an essential role in\b/gi,'is essential to'],
- [/ \bplays a major role in\b/gi,'strongly affects'],
- [/ \bserves as a reminder that\b/gi,'shows that'],
- [/ \bin light of the fact that\b/gi,'because'],
- [/ \bthe question of whether\b/gi,'whether'],
- [/ \ba number of different\b/gi,'several'],
+ [/\bindividuals\b/gi,'people'],
+ [/\butilization\b/gi,'use'],
+ [/\bfacilitate\b/gi,'help'],
+ [/\bfacilitates\b/gi,'helps'],
+ [/\bfacilitated\b/gi,'helped'],
+ [/\bapproximately\b/gi,'about'],
+ [/\ba considerable amount of\b/gi,'much'],
+ [/\bin the context of\b/gi,'in'],
+ [/\bwith the aim of\b/gi,'to'],
+ [/\bhas a significant impact on\b/gi,'strongly affects'],
+ [/\bhas an impact on\b/gi,'affects'],
+ [/\bplays a significant role in\b/gi,'shapes'],
+ [/\bplays an essential role in\b/gi,'is essential to'],
+ [/\bplays a major role in\b/gi,'strongly affects'],
+ [/\bserves as a reminder that\b/gi,'shows that'],
+ [/\bin light of the fact that\b/gi,'because'],
+ [/\bthe question of whether\b/gi,'whether'],
+ [/\ba number of different\b/gi,'several'],
  [/ \bit is clear that\b/gi,''],
  [/ \bit is evident that\b/gi,''],
  [/ \bthere is no doubt that\b/gi,''],
@@ -196,7 +196,7 @@ function improveWording(value,tone,length,depth){
  out=out.replace(/\bthis (essay|paper) will (discuss|explore|examine|explain|analyze|analyse) ([^.!?;]+)/gi,(_,kind,verb,topic)=>'This '+kind+' '+({discuss:'discusses',explore:'explores',examine:'examines',explain:'explains',analyze:'analyzes',analyse:'analyses'}[verb.toLowerCase()]||verb)+' '+topic.trim());
  out=out.replace(/\bhas the potential to\b/gi,'can');
  if(depth==='deep'){
-  out=out.replace(/(^|[.!?]\s+|\n\s*)(?:furthermore|moreover|additionally),\s*/gi,'$1');
+  out=out.replace(/(^|[.!?]\s+|\n\s*)(?:furthermore|moreover|additionally|also),\s*/gi,'$1');
   out=out.replace(/(^|[.!?]\s+|\n\s*)in conclusion,\s*/gi,'$1');
   out=out.replace(/(^|[.!?]\s+|\n\s*)to sum up,\s*/gi,'$1');
   const simpleVerbs=[
@@ -229,7 +229,7 @@ function improveWording(value,tone,length,depth){
   ];
   for(const [pattern,replacement] of contractions)out=out.replace(pattern,match=>preserveCase(match,replacement));
  }
- return tidyText(out.replace(/[ \t]{2,}/g,' ').replace(/[ \t]+([,.;:!?])/g,'$1').replace(/,\s*,/g,','));
+ return tidyText(out.replace(/(^|[.!?]\s+|\n\s*),\s*/g,'$1').replace(/[ \t]{2,}/g,' ').replace(/[ \t]+([,.;:!?])/g,'$1').replace(/,\s*,/g,','));
 }
 function splitSentences(text){
  if(typeof Intl!=='undefined'&&Intl.Segmenter){
